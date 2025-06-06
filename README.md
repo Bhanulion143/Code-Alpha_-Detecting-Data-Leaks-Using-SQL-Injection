@@ -24,8 +24,8 @@ List out the main goals your system achieves:
 Clearly mention the technologies used for implementation:
 
 Area	Technology
-Backend	Python (Flask) / Node.js
-Database	PostgreSQL / MySQL
+frontend	html,css,react / Node.js/type script
+Database	PostgreSQL / MySQL/mongodbsql
 Encryption	AES-256 (cryptography, crypto)
 Security	JWT / Role-based Access / Input Filters
 Deployment	Docker, Heroku, AWS, Render
