@@ -1,0 +1,99 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Lock, Activity } from "lucide-react";
+import SQLInjectionDetector from "@/components/security/SQLInjectionDetector";
+import EncryptionManager from "@/components/security/EncryptionManager";
+import CapabilityManager from "@/components/security/CapabilityManager";
+import SecurityMonitor from "@/components/security/SecurityMonitor";
+
+const SecurityDashboard = () => {
+  const [threats, setThreats] = useState(0);
+  const [encryptedData, setEncryptedData] = useState(0);
+  const [securityLevel, setSecurityLevel] = useState(100);
+
+  // Example: update security level based on threats
+  useEffect(() => {
+    setSecurityLevel(Math.max(0, 100 - threats * 2));
+  }, [threats]);
+
+  return (
+    <div className="min-h-screen bg-slate-900 py-10 px-4">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Top Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-400 text-sm">Threats Detected</p>
+                  <p className="text-2xl font-bold text-red-400">{threats}</p>
+                </div>
+                <Activity className="h-8 w-8 text-red-400" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-400 text-sm">Encrypted Records</p>
+                  <p className="text-2xl font-bold text-green-400">{encryptedData.toLocaleString()}</p>
+                </div>
+                <Lock className="h-8 w-8 text-green-400" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-400 text-sm">System Status</p>
+                  <p className="text-2xl font-bold text-blue-400">ACTIVE</p>
+                </div>
+                <Activity className="h-8 w-8 text-blue-400" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content */}
+        <Tabs defaultValue="detection" className="space-y-6">
+          <TabsList className="bg-slate-800/50 border-slate-700">
+            <TabsTrigger value="detection" className="data-[state=active]:bg-blue-600">
+              SQL Injection Detection
+            </TabsTrigger>
+            <TabsTrigger value="encryption" className="data-[state=active]:bg-blue-600">
+              AES-256 Encryption
+            </TabsTrigger>
+            <TabsTrigger value="capabilities" className="data-[state=active]:bg-blue-600">
+              Capability Control
+            </TabsTrigger>
+            <TabsTrigger value="monitoring" className="data-[state=active]:bg-blue-600">
+              Security Monitor
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="detection">
+            <SQLInjectionDetector onThreatDetected={() => setThreats(prev => prev + 1)} />
+          </TabsContent>
+
+          <TabsContent value="encryption">
+            <EncryptionManager onDataEncrypted={() => setEncryptedData(prev => prev + 1)} />
+          </TabsContent>
+
+          <TabsContent value="capabilities">
+            <CapabilityManager />
+          </TabsContent>
+
+          <TabsContent value="monitoring">
+            <SecurityMonitor threats={threats} securityLevel={securityLevel} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export default SecurityDashboard;
+// ...existing code...
